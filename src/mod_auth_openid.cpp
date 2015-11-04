@@ -454,7 +454,7 @@ static int set_session_cookie(request_rec *r, modauthopenid_config *s_cfg, opkel
     r->args = NULL;
   else
     apr_cpystrn(r->args, args.c_str(), 1024);
-  full_uri(r, redirect_location, s_cfg);
+  full_uri(r, redirect_location, s_cfg,true);
   return modauthopenid::http_redirect(r, redirect_location);
 };
 
