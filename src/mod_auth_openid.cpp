@@ -348,6 +348,7 @@ static bool has_valid_session(request_rec *r, modauthopenid_config *s_cfg) {
           : session.identity.c_str();
         APDEBUG(r, "setting REMOTE_USER to %s", idchar);
         r->user = apr_pstrdup(r->pool, idchar);
+        apr_table_set(r->headers_in, "Login-User", r->user);
         return true;
       } else {
         APDEBUG(r, "session found for different path or hostname (cookie was for %s)", session.hostname.c_str());
@@ -564,6 +565,7 @@ static int validate_authentication_session(request_rec *r, modauthopenid_config 
     // if we're not setting cookie - don't redirect, just show page
     APDEBUG(r, "Setting REMOTE_USER to %s", remote_user.c_str());
     r->user = apr_pstrdup(r->pool, remote_user.c_str());
+    apr_table_set(r->headers_in, "Login-User", r->user);
     return OK;
   } catch(opkele::exception &e) {
     APERR(r, "Error in authentication: %s", e.what());
